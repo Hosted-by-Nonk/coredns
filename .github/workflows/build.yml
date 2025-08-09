@@ -9,8 +9,8 @@ env:
   IMAGE_NAME: Hosted-by-Nonk/coredns
 
 jobs:
-  build-and-push-image:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: write
@@ -19,7 +19,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with: { submodules: recursive }
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:

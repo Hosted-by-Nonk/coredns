@@ -1,12 +1,4 @@
-FROM golang:1.24 AS builder
-
-COPY coredns /src
-WORKDIR /src
-RUN export GOFLAGS="-buildvcs=false"; make gen && make
-
-FROM debian:stable-slim AS runner
-
-COPY --from=builder /src/coredns /coredns
+FROM debian:stable-slim
 
 RUN export DEBCONF_NONINTERACTIVE_SEEN=true \
            DEBIAN_FRONTEND=noninteractive \
@@ -17,9 +9,13 @@ RUN export DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -yyqq install curl ca-certificates libcap2-bin \
     && apt-get clean
 
+COPY --from=coredns/coredns:1.12.3 /coredns /coredns
+RUN setcap cap_net_bind_service=+ep /coredns
+
 HEALTHCHECK --interval=5s --timeout=5s --retries=1 \
     CMD curl -f localhost:8081/health || exit 1
 
 WORKDIR /
 EXPOSE 53/tcp 53/udp
+
 ENTRYPOINT ["/coredns"]
