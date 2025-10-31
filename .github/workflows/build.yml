@@ -3,10 +3,16 @@ name: Build and publish the Docker image
 on:
   push:
     tags: ["release"]
+  pull_request:
+    paths: [Dockerfile]
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: Hosted-by-Nonk/coredns
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
