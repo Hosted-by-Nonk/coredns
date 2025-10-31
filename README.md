@@ -22,6 +22,6 @@ services:
     restart: always
     networks: [default, caddy]
     ports: [53:53/tcp, 53:53/udp]
-	environment:
-	  HEALTHCHECK_PORT: 9999
+    environment:
+      HEALTHCHECK_PORT: 9999
 ```
