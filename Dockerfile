@@ -13,7 +13,7 @@ COPY --from=coredns/coredns:1.13.1 /coredns /coredns
 RUN setcap cap_net_bind_service=+ep /coredns
 
 HEALTHCHECK --interval=5s --timeout=5s --retries=1 \
-    CMD curl -f localhost:8081/health || exit 1
+    CMD curl -f localhost:${HEALTHCHECK_PORT:-8081}/health || exit 1
 
 WORKDIR /
 EXPOSE 53/tcp 53/udp
