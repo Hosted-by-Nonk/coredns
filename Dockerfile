@@ -9,7 +9,7 @@ RUN export DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -yyqq install curl ca-certificates libcap2-bin \
     && apt-get clean
 
-COPY --from=coredns/coredns:1.13.1 /coredns /coredns
+COPY --from=coredns/coredns:1.13.2 /coredns /coredns
 RUN setcap cap_net_bind_service=+ep /coredns
 
 HEALTHCHECK --interval=5s --timeout=5s --retries=1 \
